@@ -2,6 +2,7 @@ package com.example.foodStore.Entity.Mapper;
 
 import com.example.foodStore.Entity.Dto.UsuarioCreate;
 import com.example.foodStore.Entity.Dto.UsuarioDto;
+import com.example.foodStore.Entity.Enums.Rol;
 import com.example.foodStore.Entity.Usuario;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +13,9 @@ public class UsuarioMapper {
         Usuario usuario = new Usuario();
         usuario.setNombre(uc.getNombre());
         usuario.setApellido(uc.getApellido());
-        usuario.setEmail(uc.getEnail());
-        usuario.setCelular(uc.getCelular());
+        usuario.setEmail(uc.getEmail());
         usuario.setContrasena(uc.getContrasena());
-        usuario.setRol(uc.getRol());
+        usuario.setRol(Rol.USUARIO);
         return usuario;
     }
 

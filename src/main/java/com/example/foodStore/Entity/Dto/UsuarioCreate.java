@@ -12,8 +12,6 @@ public class UsuarioCreate {
     String nombre;
     String apellido;
     String email;
-    int celular;
     String contrasena;
-    Rol rol;
 
 }

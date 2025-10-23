@@ -3,9 +3,12 @@ package com.example.foodStore.Service;
 import com.example.foodStore.Entity.Dto.UsuarioCreate;
 import com.example.foodStore.Entity.Dto.UsuarioDto;
 import com.example.foodStore.Entity.Mapper.UsuarioMapper;
+import com.example.foodStore.Entity.Usuario;
 import com.example.foodStore.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImp implements UsuarioService{
@@ -16,19 +19,34 @@ public class UsuarioServiceImp implements UsuarioService{
     @Autowired
     UsuarioMapper usuarioMapper;
 
+    @Autowired
+    AuthService authService;
+
     @Override
-    public void AuthUsuario() {
-        
+    public UsuarioDto save(UsuarioCreate uc){
+        Usuario usuario = usuarioMapper.toEntity(uc);
+        usuario = usuarioRepository.save(authService.register(usuario));
+        return usuarioMapper.toDto(usuario);
     }
 
     @Override
-    public UsuarioDto save(UsuarioCreate usuarioCreate) {
-        Long
-        return null;
+    public void addCelular(Long id, int celular) {
+        Optional<Usuario> u = usuarioRepository.findById(id);
+        if (u.isEmpty()){
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        Usuario usuario = u.get();
+        usuario.setCelular(celular);
+        usuarioRepository.save(usuario);
     }
 
     @Override
-    public UsuarioDto findById(Long id) {
-        return null;
+    public void delete(Long id) {
+        Optional<Usuario> u = usuarioRepository.findById(id);
+        if (u.isEmpty()){
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        Usuario usuario = u.get();
+        usuarioRepository.delete(usuario);
     }
 }
