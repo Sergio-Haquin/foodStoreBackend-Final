@@ -24,6 +24,7 @@ public class UsuarioMapper {
         usuarioDto.setNombre(u.getNombre());
         usuarioDto.setApellido(u.getApellido());
         usuarioDto.setEmail(u.getEmail());
+        usuarioDto.setRol(u.getRol());
         return usuarioDto;
     }
 

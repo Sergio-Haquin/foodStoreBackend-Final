@@ -38,7 +38,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/addcelular/{id}/{celular}")
-    public ResponseEntity<?> addCelular(@PathVariable Long id, @PathVariable int celular) {
+    public ResponseEntity<?> addCelular(@PathVariable Long id, @PathVariable Long celular) {
         try {
             usuarioService.addCelular(id, celular);
             return ResponseEntity.ok("Celular Agregado");

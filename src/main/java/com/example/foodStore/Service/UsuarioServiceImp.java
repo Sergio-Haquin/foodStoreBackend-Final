@@ -30,7 +30,7 @@ public class UsuarioServiceImp implements UsuarioService{
     }
 
     @Override
-    public void addCelular(Long id, int celular) {
+    public void addCelular(Long id, Long celular) {
         Optional<Usuario> u = usuarioRepository.findById(id);
         if (u.isEmpty()){
             throw new RuntimeException("Usuario no encontrado");

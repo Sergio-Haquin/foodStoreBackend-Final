@@ -1,10 +1,7 @@
 package com.example.foodStore.Entity;
 
 import com.example.foodStore.Entity.Enums.Rol;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.nio.charset.StandardCharsets;
@@ -23,8 +20,9 @@ public class Usuario {
     private String nombre;
     private String Apellido;
     private String email;
-    private int celular;
+    private Long celular;
     private String contrasena;
+    @Enumerated(EnumType.STRING)
     private Rol rol;
 
     public static String hash(String input) {
