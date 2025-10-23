@@ -1,7 +1,6 @@
 package com.example.foodStore.Controller;
 
 import com.example.foodStore.Entity.Dto.UsuarioCreate;
-import com.example.foodStore.Entity.Dto.UsuarioDto;
 import com.example.foodStore.Service.AuthService;
 import com.example.foodStore.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

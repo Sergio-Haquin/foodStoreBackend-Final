@@ -1,6 +1,5 @@
 package com.example.foodStore.Entity.Dto;
 
-import com.example.foodStore.Entity.Enums.Rol;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
