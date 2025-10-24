@@ -5,9 +5,9 @@ import com.example.foodStore.Entity.Dto.UsuarioDto;
 
 public interface UsuarioService {
 
-    public UsuarioDto save(UsuarioCreate usuarioCreate);
-    public void addCelular(String email, Long celular);
-    public void cambiarContrasena(String email, String contrasena);
-    public void delete(String email);
+    UsuarioDto save(UsuarioCreate usuarioCreate);
+    void addCelular(String email, Long celular);
+    void cambiarContrasena(String email, String contrasena);
+    void delete(String email);
 
 }
