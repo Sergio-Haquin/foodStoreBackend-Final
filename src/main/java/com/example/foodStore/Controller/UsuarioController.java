@@ -1,6 +1,7 @@
 package com.example.foodStore.Controller;
 
 import com.example.foodStore.Entity.Dto.UsuarioCreate;
+import com.example.foodStore.Entity.Dto.UsuarioLogin;
 import com.example.foodStore.Service.AuthService;
 import com.example.foodStore.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +29,39 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/login/{email}/{contrasena}")
-    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String contrasena) {
+    @GetMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UsuarioLogin usuarioLogin) {
         try {
-            return ResponseEntity.ok(authService.login(email, contrasena));
+            return ResponseEntity.ok(authService.login(usuarioLogin.getEmail(), usuarioLogin.getContrasena()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/addcelular/{id}/{celular}")
-    public ResponseEntity<?> addCelular(@PathVariable Long id, @PathVariable Long celular) {
+    @PutMapping("/addcelular/{email}/{celular}")
+    public ResponseEntity<?> addCelular(@PathVariable String email, @PathVariable Long celular) {
         try {
-            usuarioService.addCelular(id, celular);
+            usuarioService.addCelular(email, celular);
             return ResponseEntity.ok("Celular Agregado");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    @PutMapping("/changecontrasena/{email}/{contrasena}")
+    public ResponseEntity<?> cambiarContrasena(@PathVariable String email, @PathVariable String contrasena) {
         try {
-            usuarioService.delete(id);
+            usuarioService.cambiarContrasena(email, contrasena);
+            return ResponseEntity.ok("Cambio de contraseña exitoso");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/eliminar/{email}")
+    public ResponseEntity<?> delete(@PathVariable String email) {
+        try {
+            usuarioService.delete(email);
             return ResponseEntity.ok("Usuario Eliminado");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

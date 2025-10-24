@@ -33,8 +33,8 @@ public class UsuarioServiceImp implements UsuarioService{
     }
 
     @Override
-    public void addCelular(Long id, Long celular) {
-        Optional<Usuario> u = usuarioRepository.findById(id);
+    public void addCelular(String email, Long celular) {
+        Optional<Usuario> u = usuarioRepository.findByEmail(email);
         if (u.isEmpty()){
             throw new RuntimeException("Usuario no encontrado");
         }
@@ -44,8 +44,19 @@ public class UsuarioServiceImp implements UsuarioService{
     }
 
     @Override
-    public void delete(Long id) {
-        Optional<Usuario> u = usuarioRepository.findById(id);
+    public void cambiarContrasena(String email, String contrasena) {
+        Optional<Usuario> u = usuarioRepository.findByEmail(email);
+        if (u.isEmpty()) {
+            throw new RuntimeException("usuario no encontrado");
+        }
+        Usuario usuario = u.get();
+        usuario.setContrasena(contrasena);
+        usuarioRepository.save(authService.register(usuario));
+    }
+
+    @Override
+    public void delete(String email) {
+        Optional<Usuario> u = usuarioRepository.findByEmail(email);
         if (u.isEmpty()){
             throw new RuntimeException("Usuario no encontrado");
         }
