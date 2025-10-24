@@ -29,7 +29,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioLogin usuarioLogin) {
         try {
             return ResponseEntity.ok(authService.login(usuarioLogin.getEmail(), usuarioLogin.getContrasena()));
