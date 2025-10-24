@@ -25,6 +25,9 @@ public class UsuarioServiceImp implements UsuarioService{
     @Override
     public UsuarioDto save(UsuarioCreate uc){
         Usuario usuario = usuarioMapper.toEntity(uc);
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new RuntimeException("El correo utilizado ya esta registrado");
+        }
         usuario = usuarioRepository.save(authService.register(usuario));
         return usuarioMapper.toDto(usuario);
     }
