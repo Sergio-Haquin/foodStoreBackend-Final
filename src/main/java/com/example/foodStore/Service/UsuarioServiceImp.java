@@ -8,8 +8,6 @@ import com.example.foodStore.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UsuarioServiceImp implements UsuarioService{
 
@@ -34,33 +32,21 @@ public class UsuarioServiceImp implements UsuarioService{
 
     @Override
     public void addCelular(String email, Long celular) {
-        Optional<Usuario> u = usuarioRepository.findByEmail(email);
-        if (u.isEmpty()){
-            throw new RuntimeException("Usuario no encontrado");
-        }
-        Usuario usuario = u.get();
-        usuario.setCelular(celular);
-        usuarioRepository.save(usuario);
+        Usuario u = usuarioRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("No se encontro el usuario"));
+        u.setCelular(celular);
+        usuarioRepository.save(u);
     }
 
     @Override
     public void cambiarContrasena(String email, String contrasena) {
-        Optional<Usuario> u = usuarioRepository.findByEmail(email);
-        if (u.isEmpty()) {
-            throw new RuntimeException("usuario no encontrado");
-        }
-        Usuario usuario = u.get();
-        usuario.setContrasena(contrasena);
-        usuarioRepository.save(authService.register(usuario));
+        Usuario u = usuarioRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("No se encontro el usuario"));
+        u.setContrasena(contrasena);
+        usuarioRepository.save(authService.register(u));
     }
 
     @Override
     public void delete(String email) {
-        Optional<Usuario> u = usuarioRepository.findByEmail(email);
-        if (u.isEmpty()){
-            throw new RuntimeException("Usuario no encontrado");
-        }
-        Usuario usuario = u.get();
-        usuarioRepository.delete(usuario);
+        Usuario u = usuarioRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("No se encontro el usuario"));
+        usuarioRepository.delete(u);
     }
 }
