@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoriaServiceImp implements CategoriaService {
@@ -32,7 +31,7 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     public CategoriaDto find(String nombre) {
-        Categoria c = categoriaRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
         return categoriaMapper.toDto(c);
     }
 
@@ -43,21 +42,21 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     public void editName(String nombre, String newNombre) {
-        Categoria c = categoriaRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
         c.setNombre(newNombre);
         categoriaRepository.save(c);
     }
 
     @Override
     public void editDescription(String nombre, String descripcion) {
-        Categoria c = categoriaRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
         c.setDescripcion(descripcion);
         categoriaRepository.save(c);
     }
 
     @Override
     public void delete(String nombre) {
-        Categoria c = categoriaRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
         categoriaRepository.delete(c);
     }
 }

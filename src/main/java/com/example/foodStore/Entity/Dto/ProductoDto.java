@@ -1,6 +1,5 @@
 package com.example.foodStore.Entity.Dto;
 
-import com.example.foodStore.Entity.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

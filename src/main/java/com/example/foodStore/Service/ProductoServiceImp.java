@@ -37,7 +37,7 @@ public class ProductoServiceImp implements ProductoService {
 
     @Override
     public ProductoDto findByName(String nombre) {
-        Producto p = productoRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+        Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
         return productoMapper.toDto(p);
     }
 
@@ -49,14 +49,14 @@ public class ProductoServiceImp implements ProductoService {
 
     @Override
     public void editPrice(String nombre, double precio) {
-        Producto p = productoRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+        Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
         p.setPrecio(precio);
         productoRepository.save(p);
     }
 
     @Override
     public void editCategory(String nombre, Long idCategoria) {
-        Producto p = productoRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+        Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
         Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow(() -> new NullPointerException("No se encontro la categoria con el id " + idCategoria));
         p.setCategoria(categoria);
         productoRepository.save(p);
@@ -64,7 +64,7 @@ public class ProductoServiceImp implements ProductoService {
 
     @Override
     public void delete(String nombre) {
-        Producto p = productoRepository.findByName(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+        Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
         productoRepository.delete(p);
     }
 }
