@@ -44,16 +44,4 @@ public class ProductoMapper {
       productoDto.setStock(p.getStock());
       return productoDto;
    }
-
-   public void updateEntityFromCreateDto(ProductoCreate pc, Producto producto) {
-      if (pc.getNombre() != null) producto.setNombre(pc.getNombre());
-      if (pc.getSrc() != null) producto.setSrc(pc.getSrc());
-      if (pc.getStock() != null) producto.setStock(pc.getStock());
-      producto.setPrecio(pc.getPrecio());
-      if (pc.getIdCategoria() != null) {
-         Categoria categoria = categoriaRepository.findById(pc.getIdCategoria())
-                 .orElseThrow(() -> new NullPointerException("No se encontro la categoria con el id " + pc.getIdCategoria()));
-         producto.setCategoria(categoria);
-      }
-   }
 }
