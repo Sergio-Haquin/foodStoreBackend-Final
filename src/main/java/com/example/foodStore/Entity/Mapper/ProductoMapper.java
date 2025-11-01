@@ -17,11 +17,6 @@ public class ProductoMapper {
    @Autowired
    CategoriaMapper categoriaMapper;
 
-   public ProductoMapper(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
-      this.categoriaRepository = categoriaRepository;
-      this.categoriaMapper = categoriaMapper;
-   }
-
    public Producto toEntity(ProductoCreate pc){
       Producto producto = new Producto();
       producto.setNombre(pc.getNombre());
