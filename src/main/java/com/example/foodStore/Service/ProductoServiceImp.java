@@ -25,27 +25,12 @@ public class ProductoServiceImp implements ProductoService {
    @Autowired
    ProductoMapper productoMapper;
 
-   /**
-    * Método para guardar un nuevo producto.
-    * Se asume que este endpoint es SÓLO para CREACIÓN, ya que la edición
-    * se maneja en el Frontend con los métodos editPrice y editCategory.
-    */
    @Override
    public ProductoDto save(ProductoCreate productoCreate) {
-
-      // 🛑 CORRECCIÓN DE LÓGICA: Si el DTO trae ID, significa que se usó incorrectamente
-      // para crear. Esto previene que se mezclen flujos.
-      if (productoCreate.getId() != null) {
-         throw new IllegalArgumentException("No se puede crear un producto con ID. Use los endpoints de edición.");
-      }
-
       Producto producto = productoMapper.toEntity(productoCreate);
-
-      // 🛑 La validación de nombre único es correcta para la CREACIÓN.
       if (productoRepository.existsByNombre(producto.getNombre())) {
          throw new RuntimeException("El producto ya esta registrado");
       }
-
       producto = productoRepository.save(producto);
       return productoMapper.toDto(producto);
    }
@@ -53,27 +38,22 @@ public class ProductoServiceImp implements ProductoService {
    @Override
    public ProductoDto findByName(String nombre) {
       Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+      if (p.isEliminado()){
+          throw new RuntimeException("El producto esta eliminado");
+      }
       return productoMapper.toDto(p);
    }
 
    @Override
    public List<ProductoDto> findByCategory(Long idCategoria) {
       Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow(() -> new NullPointerException("No se encontro la categoria con el id " + idCategoria));
-      // Se mantiene tu lógica de filtro, aunque usar un método findByCategoria en el Repository sería más eficiente.
-      return productoRepository.findAll().stream().filter(p -> p.getCategoria().equals(categoria)).map(productoMapper::toDto).collect(Collectors.toList());
+      return productoRepository.findAllByEliminadoFalse().stream().filter(p -> p.getCategoria().equals(categoria)).map(productoMapper::toDto).collect(Collectors.toList());
    }
 
    @Override
    public List<ProductoDto> findAll() {
-      // 🚨 CORRECCIÓN IMPLÍCITA: Ahora que el ProductoMapper incluye el ID,
-      // la lista de productos devuelta por este método tendrá IDs válidos.
-      return productoRepository.findAll().stream().map(productoMapper::toDto).collect(Collectors.toList());
+      return productoRepository.findAllByEliminadoFalse().stream().map(productoMapper::toDto).collect(Collectors.toList());
    }
-
-   // =============================================================
-   // MÉTODOS DE EDICIÓN Y ELIMINACIÓN (Usando Long id)
-   // Estos métodos están bien.
-   // =============================================================
 
    @Override
    public void editPrice(Long id, double precio) {
@@ -93,6 +73,10 @@ public class ProductoServiceImp implements ProductoService {
    @Override
    public void delete(Long id) {
       Producto p = productoRepository.findById(id).orElseThrow(() -> new NullPointerException("Producto no encontrado con ID: " + id));
-      productoRepository.delete(p);
+      if(p.isEliminado()){
+          throw new RuntimeException("El producto ya esta eliminado");
+      }
+      p.setEliminado(true);
+      productoRepository.save(p);
    }
 }

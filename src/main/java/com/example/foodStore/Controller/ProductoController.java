@@ -15,8 +15,6 @@ public class ProductoController {
    @Autowired
    ProductoService productoService;
 
-   // POST: /producto/guardar (Crear Producto)
-   // Nota: Usar @RequestBody es correcto si el Frontend envía JSON, no form-urlencoded.
    @PostMapping("/guardar")
    public ResponseEntity<?> save(@RequestBody ProductoCreate productoCreate) {
       try {
@@ -26,7 +24,6 @@ public class ProductoController {
       }
    }
 
-   // GET: /producto/traeruno/{nombre}
    @GetMapping("/traeruno/{nombre}")
    public ResponseEntity<?> findByName(@PathVariable String nombre) {
       try {
@@ -36,7 +33,6 @@ public class ProductoController {
       }
    }
 
-   // GET: /producto/traergrupo/{idCategoria}
    @GetMapping("/traergrupo/{idCategoria}")
    public ResponseEntity<?> findByCategory(@PathVariable Long idCategoria) {
       try {
@@ -46,7 +42,6 @@ public class ProductoController {
       }
    }
 
-   // GET: /producto/traertodos (Asumido que esta función es necesaria)
    @GetMapping("/traertodos")
    public ResponseEntity<?> findAll() {
       try {
@@ -56,16 +51,9 @@ public class ProductoController {
       }
    }
 
-
-   // =============================================================
-   // MÉTODOS MODIFICADOS PARA USAR ID (Long)
-   // =============================================================
-
-   // PUT: /producto/editarprecio/{id}/{precio} (Editar Precio por ID)
-   @PutMapping("/editarprecio/{id}/{precio}") // <-- RUTA MODIFICADA
-   public ResponseEntity<?> editPrice(@PathVariable Long id, @PathVariable double precio) { // <-- PARÁMETRO MODIFICADO
+   @PutMapping("/editarprecio/{id}/{precio}")
+   public ResponseEntity<?> editPrice(@PathVariable Long id, @PathVariable double precio) {
       try {
-         // ASUMIMOS que productoService.editPrice acepta Long id, double precio
          productoService.editPrice(id, precio);
          return ResponseEntity.ok("Precio modificado con exito");
       } catch (Exception e) {
@@ -73,11 +61,9 @@ public class ProductoController {
       }
    }
 
-   // PUT: /producto/editarcategoria/{id}/{idCategoria} (Editar Categoría por ID)
-   @PutMapping("/editarcategoria/{id}/{idCategoria}") // <-- RUTA MODIFICADA
-   public ResponseEntity<?> editCategory(@PathVariable Long id, @PathVariable Long idCategoria) { // <-- PARÁMETRO MODIFICADO
+   @PutMapping("/editarcategoria/{id}/{idCategoria}")
+   public ResponseEntity<?> editCategory(@PathVariable Long id, @PathVariable Long idCategoria) {
       try {
-         // ASUMIMOS que productoService.editCategory acepta Long id, Long idCategoria
          productoService.editCategory(id, idCategoria);
          return ResponseEntity.ok("Categoria modificada con exito");
       } catch (Exception e) {
@@ -85,11 +71,9 @@ public class ProductoController {
       }
    }
 
-   // DELETE: /producto/eliminar/{id} (Eliminar por ID)
-   @DeleteMapping("/eliminar/{id}") // <-- RUTA MODIFICADA
-   public ResponseEntity<?> delete(@PathVariable Long id) { // <-- PARÁMETRO MODIFICADO
+   @DeleteMapping("/eliminar/{id}")
+   public ResponseEntity<?> delete(@PathVariable Long id) {
       try {
-         // ASUMIMOS que productoService.delete acepta Long id
          productoService.delete(id);
          return ResponseEntity.ok("El producto a sido eliminado con exito");
       } catch (Exception e) {

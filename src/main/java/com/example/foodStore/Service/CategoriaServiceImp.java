@@ -32,12 +32,15 @@ public class CategoriaServiceImp implements CategoriaService {
    @Override
    public CategoriaDto find(String nombre) {
       Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+      if(c.isEliminado()){
+         throw new RuntimeException("La categoria esta eliminada");
+      }
       return categoriaMapper.toDto(c);
    }
 
    @Override
    public List<CategoriaDto> findAll() {
-      return categoriaRepository.findAll().stream().map(categoriaMapper::toDto).toList();
+      return categoriaRepository.findAllByEliminadoFalse().stream().map(categoriaMapper::toDto).toList();
    }
 
    @Override
@@ -60,6 +63,9 @@ public class CategoriaServiceImp implements CategoriaService {
    @Override
    public void delete(Long id) {
       Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new NullPointerException("No se encontro la categoria con ID: " + id));
-      categoriaRepository.delete(c);
+      if(c.isEliminado()){
+         throw new RuntimeException("La categoria ya esta eliminada");
+      }
+      categoriaRepository.save(c);
    }
 }
