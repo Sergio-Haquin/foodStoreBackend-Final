@@ -2,11 +2,9 @@ package com.example.foodStore.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter @Setter
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class Producto {
     @ManyToOne
     private Categoria categoria;
 
-    @Column(columnDefinition = "boolean default false")
+    @Builder.Default
     private boolean eliminado = false;
 
 }

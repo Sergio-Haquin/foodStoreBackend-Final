@@ -38,13 +38,16 @@ public class ProductoServiceImp implements ProductoService {
     @Override
     public ProductoDto findByName(String nombre) {
         Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
+        if(p.isEliminado()){
+            throw new RuntimeException("El producto esta eliminado");
+        }
         return productoMapper.toDto(p);
     }
 
     @Override
     public List<ProductoDto> findByCategory(Long idCategoria) {
         Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow(() -> new NullPointerException("No se encontro la categoria con el id " + idCategoria));
-        return productoRepository.findAll().stream().filter(p -> p.getCategoria() == categoria).map(productoMapper::toDto).collect(Collectors.toList());
+        return productoRepository.findAllByEliminadoFalse().stream().filter(p -> p.getCategoria() == categoria).map(productoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -65,6 +68,10 @@ public class ProductoServiceImp implements ProductoService {
     @Override
     public void delete(String nombre) {
         Producto p = productoRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("Producto no encontrado"));
-        productoRepository.delete(p);
+        if(p.isEliminado()){
+            throw new RuntimeException("El producto ya esta eliminado");
+        }
+        p.setEliminado(true);
+        productoRepository.save(p);
     }
 }

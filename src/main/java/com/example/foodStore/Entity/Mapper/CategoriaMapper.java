@@ -17,6 +17,7 @@ public class CategoriaMapper {
 
     public CategoriaDto toDto(Categoria c){
         CategoriaDto categoriaDto = new CategoriaDto();
+        categoriaDto.setId(c.getId());
         categoriaDto.setNombre(c.getNombre());
         categoriaDto.setDescripcion(c.getDescripcion());
         return categoriaDto;

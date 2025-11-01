@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaServiceImp implements CategoriaService {
@@ -31,13 +32,16 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     public CategoriaDto find(String nombre) {
-        Categoria c = categoriaRepository.findByEliminadoFalse().orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        if(c.isEliminado()){
+           throw new RuntimeException("La categoria esta eliminada");
+        }
         return categoriaMapper.toDto(c);
     }
 
     @Override
     public List<CategoriaDto> findAll() {
-        return categoriaRepository.findAll().stream().filter(c -> c.get).map(categoriaMapper::toDto).toList();
+        return categoriaRepository.findAllBYEliminadoFalse().stream().map(categoriaMapper::toDto).toList();
     }
 
     @Override
@@ -57,6 +61,10 @@ public class CategoriaServiceImp implements CategoriaService {
     @Override
     public void delete(String nombre) {
         Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
-        categoriaRepository.delete(c);
+        if(c.isEliminado()){
+           throw new RuntimeException("La categoria ya fue eliminada");
+        }
+        c.setEliminado(true);
+        categoriaRepository.save(c);
     }
 }
