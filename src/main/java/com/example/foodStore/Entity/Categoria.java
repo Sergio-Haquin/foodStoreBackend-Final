@@ -1,9 +1,6 @@
 package com.example.foodStore.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +17,8 @@ public class Categoria {
 
     private String nombre;
     private String descripcion;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean eliminado = false;
 
 }

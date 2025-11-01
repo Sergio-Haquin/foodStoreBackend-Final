@@ -23,4 +23,7 @@ public class Producto {
     @ManyToOne
     private Categoria categoria;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean eliminado = false;
+
 }

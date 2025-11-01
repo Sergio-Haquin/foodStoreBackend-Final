@@ -31,13 +31,13 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     public CategoriaDto find(String nombre) {
-        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+        Categoria c = categoriaRepository.findByEliminadoFalse().orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
         return categoriaMapper.toDto(c);
     }
 
     @Override
     public List<CategoriaDto> findAll() {
-        return categoriaRepository.findAll().stream().map(categoriaMapper::toDto).toList();
+        return categoriaRepository.findAll().stream().filter(c -> c.get).map(categoriaMapper::toDto).toList();
     }
 
     @Override
