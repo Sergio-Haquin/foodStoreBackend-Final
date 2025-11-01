@@ -9,62 +9,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoriaServiceImp implements CategoriaService {
 
-    @Autowired
-    CategoriaRepository categoriaRepository;
+   @Autowired
+   CategoriaRepository categoriaRepository;
 
-    @Autowired
-    CategoriaMapper categoriaMapper;
+   @Autowired
+   CategoriaMapper categoriaMapper;
 
-    @Override
-    public CategoriaDto save(CategoriaCreate cc) {
-        Categoria categoria = categoriaMapper.toEntity(cc);
-        if (categoriaRepository.existsByNombre(categoria.getNombre())) {
-            throw new RuntimeException("La categoria ya esta registrada");
-        }
-        categoria = categoriaRepository.save(categoria);
-        return categoriaMapper.toDto(categoria);
-    }
+   @Override
+   public CategoriaDto save(CategoriaCreate cc) {
+      Categoria categoria = categoriaMapper.toEntity(cc);
+      if (categoriaRepository.existsByNombre(categoria.getNombre())) {
+         throw new RuntimeException("La categoria ya esta registrada");
+      }
+      categoria = categoriaRepository.save(categoria);
+      return categoriaMapper.toDto(categoria);
+   }
 
-    @Override
-    public CategoriaDto find(String nombre) {
-        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
-        if(c.isEliminado()){
-           throw new RuntimeException("La categoria esta eliminada");
-        }
-        return categoriaMapper.toDto(c);
-    }
+   @Override
+   public CategoriaDto find(String nombre) {
+      Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
+      return categoriaMapper.toDto(c);
+   }
 
-    @Override
-    public List<CategoriaDto> findAll() {
-        return categoriaRepository.findAllBYEliminadoFalse().stream().map(categoriaMapper::toDto).toList();
-    }
+   @Override
+   public List<CategoriaDto> findAll() {
+      return categoriaRepository.findAll().stream().map(categoriaMapper::toDto).toList();
+   }
 
-    @Override
-    public void editName(String nombre, String newNombre) {
-        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
-        c.setNombre(newNombre);
-        categoriaRepository.save(c);
-    }
+   @Override
+   public void editName(Long id, String newNombre) {
+      Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new NullPointerException("No se encontro la categoria con ID: " + id));
+      if (categoriaRepository.existsByNombre(newNombre) && !c.getNombre().equals(newNombre)) {
+         throw new RuntimeException("El nuevo nombre de categoria ya esta registrado.");
+      }
+      c.setNombre(newNombre);
+      categoriaRepository.save(c);
+   }
 
-    @Override
-    public void editDescription(String nombre, String descripcion) {
-        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
-        c.setDescripcion(descripcion);
-        categoriaRepository.save(c);
-    }
+   @Override
+   public void editDescription(Long id, String descripcion) {
+      Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new NullPointerException("No se encontro la categoria con ID: " + id));
+      c.setDescripcion(descripcion);
+      categoriaRepository.save(c);
+   }
 
-    @Override
-    public void delete(String nombre) {
-        Categoria c = categoriaRepository.findByNombre(nombre).orElseThrow(() -> new NullPointerException("No se encontro la categoria"));
-        if(c.isEliminado()){
-           throw new RuntimeException("La categoria ya fue eliminada");
-        }
-        c.setEliminado(true);
-        categoriaRepository.save(c);
-    }
+   @Override
+   public void delete(Long id) {
+      Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new NullPointerException("No se encontro la categoria con ID: " + id));
+      categoriaRepository.delete(c);
+   }
 }
