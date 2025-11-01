@@ -9,10 +9,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductoDto {
-
+    Long id;
     String nombre;
     String src;
     double precio;
     CategoriaDto categoria;
+    Long stock;
 
 }

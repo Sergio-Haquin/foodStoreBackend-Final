@@ -19,7 +19,7 @@ public class Producto {
     private String nombre;
     private String src;
     private double precio;
-
+    Long stock;
     @ManyToOne
     private Categoria categoria;
 
