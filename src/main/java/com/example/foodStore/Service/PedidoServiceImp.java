@@ -8,14 +8,14 @@ import com.example.foodStore.Entity.Enums.Estado;
 import com.example.foodStore.Entity.Mapper.DetallePedidoMapper;
 import com.example.foodStore.Entity.Mapper.PedidoMapper;
 import com.example.foodStore.Entity.Pedido;
-import com.example.foodStore.Entity.Producto; // Importación necesaria
+import com.example.foodStore.Entity.Producto;
 import com.example.foodStore.Entity.Usuario;
 import com.example.foodStore.Repository.PedidoRepository;
-import com.example.foodStore.Repository.ProductoRepository; // Importación necesaria
+import com.example.foodStore.Repository.ProductoRepository;
 import com.example.foodStore.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // Importación necesaria
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,15 +62,13 @@ public class PedidoServiceImp implements PedidoService{
          total += dp.getSubtotal();
       }
 
-      // 2. Guardar el Pedido (cabecera y detalles)
       pedido.setTotal(total);
       Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-      // 3. Descontar Stock y Guardar Productos
       for (DetallePedido dp : pedidoGuardado.getDetallesPedido()) {
          Producto producto = productoRepository.findById(dp.getProducto().getId()).get();
          producto.setStock(producto.getStock() - dp.getCantidad());
-         productoRepository.save(producto); // Actualiza el stock
+         productoRepository.save(producto);
       }
 
       return pedidoMapper.toDto(pedidoGuardado);
