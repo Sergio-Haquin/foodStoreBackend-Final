@@ -8,7 +8,9 @@ import com.example.foodStore.Entity.Enums.Estado;
 import com.example.foodStore.Entity.Mapper.DetallePedidoMapper;
 import com.example.foodStore.Entity.Mapper.PedidoMapper;
 import com.example.foodStore.Entity.Pedido;
+import com.example.foodStore.Entity.Usuario;
 import com.example.foodStore.Repository.PedidoRepository;
+import com.example.foodStore.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,11 @@ public class PedidoServiceImp implements PedidoService{
     PedidoRepository pedidoRepository;
 
     @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
     PedidoMapper pedidoMapper;
+
     @Autowired
     DetallePedidoMapper detallePedidoMapper;
 
@@ -37,13 +43,15 @@ public class PedidoServiceImp implements PedidoService{
 
     @Override
     public PedidoDto findByUser(Long idUser) {
-        Pedido pedido = pedidoRepository.findByUser(idUser).orElseThrow(() -> new NullPointerException("No se encontro el pedido con el ususario"));
+        Usuario u = usuarioRepository.findById(idUser).orElseThrow(() -> new NullPointerException("No se encontro el usuario"));
+        Pedido pedido = pedidoRepository.findByUsuario(u).orElseThrow(() -> new NullPointerException("No se encontro el pedido con el ususario"));
         return pedidoMapper.toDto(pedido);
     }
 
     @Override
     public List<PedidoDto> findAllByUser(Long idUser) {
-        List<Pedido> pedidos = pedidoRepository.findAllByUser(idUser);
+        Usuario u = usuarioRepository.findById(idUser).orElseThrow(() -> new NullPointerException("No se encontro el usuario"));
+        List<Pedido> pedidos = pedidoRepository.findAllByUsuario(u);
         if(pedidos.isEmpty()){
             throw new RuntimeException("No hay pedidos registrados de ese usuario");
         }

@@ -1,6 +1,5 @@
 package com.example.foodStore.Entity.Mapper;
 
-import com.example.foodStore.Entity.DetallePedido;
 import com.example.foodStore.Entity.Dto.PedidoCreate;
 import com.example.foodStore.Entity.Dto.PedidoDto;
 import com.example.foodStore.Entity.Pedido;
