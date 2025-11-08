@@ -80,4 +80,12 @@ public class ProductoController {
          return ResponseEntity.badRequest().body(e.getMessage());
       }
    }
+   @GetMapping("/traerid/{id}")
+   public ResponseEntity<?> findById(@PathVariable Long id) {
+      try {
+         return ResponseEntity.ok(productoService.findById(id));
+      } catch (Exception e) {
+         return ResponseEntity.badRequest().body(e.getMessage());
+      }
+   }
 }

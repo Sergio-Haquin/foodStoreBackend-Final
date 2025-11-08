@@ -8,6 +8,7 @@ import java.util.List;
 public interface ProductoService {
 
    ProductoDto save(ProductoCreate productoCreate);
+   ProductoDto findById(Long id);
    ProductoDto findByName(String nombre);
    List<ProductoDto> findByCategory(Long idCategoria);
    List<ProductoDto> findAll();

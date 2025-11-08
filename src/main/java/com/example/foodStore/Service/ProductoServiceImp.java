@@ -79,4 +79,10 @@ public class ProductoServiceImp implements ProductoService {
       p.setEliminado(true);
       productoRepository.save(p);
    }
+   @Override
+   public ProductoDto findById(Long id) {
+      Producto producto = productoRepository.findById(id)
+              .orElseThrow(() -> new NullPointerException("Producto no encontrado con el id: " + id));
+      return productoMapper.toDto(producto);
+   }
 }
